@@ -11,15 +11,31 @@ export class OrdersService {
     return this.orders;
   }
   findOrdersByUserId(userId: number) {
-    return this.orders.filter(order => order.userId === userId);
+    const orders = this.orders.filter(order => order.userId === Number(userId));
+    if (orders.length === 0) {
+      return { status: 'error', message: 'No orders found for the specified user' };
+    }
+    return { status: 'success', data: orders };
   }
   findOrderById(id: number) {
-    return this.orders.find(order => order.id === id);
+    const order = this.orders.find(order => order.id === Number(id));
+    if (!order) {
+      return{ status: 'error', message: 'Order not found' };
+    }
+    return { status: 'success', data: order };
   }
   findOrdersByStatus(status: string) {
-    return this.orders.filter(order => order.status === status);
+    const orders = this.orders.filter(order => order.status === String(status));
+    if (orders.length === 0) {
+      return { status: 'error', message: 'No orders found with the specified status' };
+    }
+    return { status: 'success', data: orders };
   }
   findOrdersByItem(item: string) {
-    return this.orders.filter(order => order.item.toLowerCase() === item.toLowerCase());
+    const orders = this.orders.filter(order => order.item.toString().toLowerCase() === item.toString().toLowerCase());
+    if (orders.length === 0) {
+      return { status: 'error', message: 'No orders found with the specified item' };
+    }
+    return { status: 'success', data: orders };
   }
 }

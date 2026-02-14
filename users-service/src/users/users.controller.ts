@@ -10,7 +10,7 @@ export class UsersController {
         return this.usersService.findAll();
     }
     @MessagePattern({ cmd: 'get_user_by_id' })
-    async findOne(@Param('id', ParseIntPipe) id: number) {
+    async findOne(id: number) {
         return this.usersService.findOne(id);
     }
 }
