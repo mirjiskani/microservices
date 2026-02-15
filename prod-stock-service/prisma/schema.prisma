@@ -1,0 +1,54 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  status Int @default(1) // 1 for active, 0 for inactive
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Product {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  categoryId Int
+  category Category @relation(fields: [categoryId], references: [id])
+  status Int @default(1) // 1 for active, 0 for inactive
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductStock {
+  id   Int    @id @default(autoincrement())
+  productId Int
+  product Product @relation(fields: [productId], references: [id])
+  stock Int
+  status Int @default(1) // 1 for active, 0 for inactive
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProductStockTransaction {
+  id   Int    @id @default(autoincrement())
+  productStockId Int
+  productStock ProductStock @relation(fields: [productStockId], references: [id])
+  transactionType String
+  quantity Int
+  status Int @default(1) // 1 for success, 0 for failed
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
