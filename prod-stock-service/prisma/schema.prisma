@@ -10,9 +10,9 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "postgresql"
 }
+//prisma.config.ts
 
 model Category {
   id   Int    @id @default(autoincrement())
